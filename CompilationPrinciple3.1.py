@@ -97,13 +97,13 @@ def printVT():
 # Ctrl+D结束输入
 if __name__ == '__main__':
     print("请输入一个文法：")
-    grammer = sys.stdin.read().splitlines()
-    grammer = [e for e in grammer if e != '']
-    print(grammer)
-    for gr in grammer:
+    grammar = sys.stdin.read().splitlines()
+    grammar = [e for e in grammar if e != '']
+    print(grammar)
+    for gr in grammar:
         if gr[0] not in non_ter:
             non_ter.append(gr[0])
-    for gr in grammer:
+    for gr in grammar:
         for i in range(len(gr)):
             if gr[i] not in non_ter:
                 # 箭头输入是->
@@ -125,18 +125,18 @@ if __name__ == '__main__':
     lastF = copy.deepcopy(F)
     print("firstF:")
     print(firstF)
-    initFirstMatrix(grammer, firstF)
+    initFirstMatrix(grammar, firstF)
     print("firstF:")
     print(firstF)
-    first(grammer, firstF)
+    first(grammar, firstF)
     print("firstF:")
     print(firstF)
     print("lastF:")
     print(lastF)
-    initLastMatrix(grammer, lastF)
+    initLastMatrix(grammar, lastF)
     print("lastF:")
     print(lastF)
-    last(grammer, lastF)
+    last(grammar, lastF)
     print("lastF:")
     print(lastF)
     printVT()
