@@ -10,8 +10,8 @@ firstF = []  # firstVT的布尔矩阵
 lastF = []  # lastVT的布尔矩阵
 
 
-def initFirstMatrix(grammer, F):
-    for gra_line in grammer:
+def init_first_matrix(grammar, F):
+    for gra_line in grammar:
         for i in range(len(gra_line) - 1):
             if gra_line[i] == '→' or gra_line[i] == '|':
                 if gra_line[i + 1] in terSymbol:
@@ -27,10 +27,10 @@ def initFirstMatrix(grammer, F):
                         firstStack.append([gra_line[0], gra_line[i + 2]])
 
 
-def first(grammer, F):
+def first(grammar, F):
     while len(firstStack) > 0:
         tmp = firstStack.pop()
-        for gra in grammer:
+        for gra in grammar:
             for i in range(len(gra) - 1):
                 if (gra[i] == '→' or gra[i] == '|') and gra[i + 1] == tmp[0]:
                     terInd = terSymbol.index(tmp[1])
@@ -40,8 +40,8 @@ def first(grammer, F):
                         firstStack.append([gra[0], tmp[1]])
 
 
-def initLastMatrix(grammer, F):
-    for gra_line in grammer:
+def initLastMatrix(grammar, F):
+    for gra_line in grammar:
         for i in range(len(gra_line)):
             if i == (len(gra_line) - 1) or (i < (len(gra_line) - 1) and gra_line[i + 1] == '|'):
                 if gra_line[i] in terSymbol:
@@ -57,10 +57,10 @@ def initLastMatrix(grammer, F):
                         lastStack.append([gra_line[0], gra_line[i - 1]])
 
 
-def last(grammer, F):
+def last(grammar, F):
     while len(lastStack) > 0:
         tmp = lastStack.pop()
-        for gra in grammer:
+        for gra in grammar:
             for i in range(len(gra)):
                 if (i == (len(gra) - 1) or (i < (len(gra) - 1) and gra[i + 1] == '|')) and gra[i] == tmp[0]:
                     terInd = terSymbol.index(tmp[1])
@@ -105,7 +105,7 @@ if __name__ == '__main__':
             non_ter.append(gr[0])
     for gr in grammar:
         for i in range(len(gr)):
-            if gr[i] not in non_ter:
+            if gr[i] not in non_ter and gr[i] not in terSymbol:
                 # 箭头输入是->
                 # if gr[i] == '-':
                 #     if i == len(gr)-1:
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     lastF = copy.deepcopy(F)
     print("firstF:")
     print(firstF)
-    initFirstMatrix(grammar, firstF)
+    init_first_matrix(grammar, firstF)
     print("firstF:")
     print(firstF)
     first(grammar, firstF)
