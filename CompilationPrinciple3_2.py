@@ -1,64 +1,76 @@
 from prettytable import PrettyTable
 
-import CompilationPrinciple
-from CompilationPrinciple import *
-
-priorityRelationship = []
+import CompilationPrinciple3_1
+from CompilationPrinciple3_1 import *
 
 
-def constructPriorityList(grammer):
+def construct_priority_list(grammer):
     for gra_line in grammer:
         gra_line = gra_line.split('→')[1]
         gra_list = gra_line.split('|')
         for gra in gra_list:
-            for i in range(len(gra_line) - 1):
-                if gra[i] in CompilationPrinciple.terSymbol:
-                    if gra[i + 1] in CompilationPrinciple.terSymbol:
-                        firstTerIndex = terSymbol.index(gra[i])
-                        secondTerIndex = terSymbol.index(gra[i + 1])
-                        if priorityRelationship[firstTerIndex][secondTerIndex] != '':
+            for i in range(len(gra) - 1):
+                if gra[i] in terminals:
+                    if gra[i + 1] in terminals:
+                        first_ter_index = terminals.index(gra[i])
+                        second_ter_index = terminals.index(gra[i + 1])
+                        if priority_relationship[first_ter_index][second_ter_index] != '':
                             print("文法不是算符文法")
                             return False
-                        priorityRelationship[firstTerIndex][secondTerIndex] = '='
-                    if i < (len(gra_line) - 2):
-                        if gra[i + 1] in CompilationPrinciple.non_ter and gra[i + 2] in CompilationPrinciple.terSymbol:
-                            firstTerIndex = terSymbol.index(gra[i])
-                            secondTerIndex = terSymbol.index(gra[i + 2])
-                            if priorityRelationship[firstTerIndex][secondTerIndex] != '':
+                        priority_relationship[first_ter_index][second_ter_index] = '='
+                    if i < (len(gra) - 2):
+                        if gra[i + 1] in non_terminals and gra[i + 2] in terminals:
+                            first_ter_index = terminals.index(gra[i])
+                            second_ter_index = terminals.index(gra[i + 2])
+                            if priority_relationship[first_ter_index][second_ter_index] != '':
                                 print("文法不是算符文法")
                                 return False
-                            priorityRelationship[firstTerIndex][secondTerIndex] = '='
-                    if gra[i + 1] in CompilationPrinciple.non_ter:
-                        nonTerIndex = non_ter.index(gra[i + 1])
-                        terIndex = terSymbol.index(gra[i])
-                        for firstVTIndex in range(len(CompilationPrinciple.firstF[nonTerIndex])):
-                            if CompilationPrinciple.firstF[nonTerIndex][firstVTIndex] == 'T':
-                                if priorityRelationship[terIndex][firstVTIndex] != '':
-                                    print("文法不是算符文法")
-                                    return False
-                                priorityRelationship[terIndex][firstVTIndex] = '<'
-                elif gra[i] in CompilationPrinciple.non_ter:
-                    if gra[i + 1] in CompilationPrinciple.terSymbol:
-                        nonTerIndex = non_ter.index(gra[i])
-                        terIndex = terSymbol.index(gra[i + 1])
-                        for lastVTIndex in range(len(CompilationPrinciple.lastF[nonTerIndex])):
-                            if CompilationPrinciple.firstF[nonTerIndex][lastVTIndex] == 'T':
-                                if priorityRelationship[lastVTIndex][terIndex] != '':
-                                    print("文法不是算符文法")
-                                    return False
-                                priorityRelationship[lastVTIndex][terIndex] = '>'
+                            priority_relationship[first_ter_index][second_ter_index] = '='
+                    if gra[i + 1] in non_terminals:
+                        ter_index = terminals.index(gra[i])
+                        for first_vt_item in first_vt[gra[i + 1]]:
+                            first_vt_index = terminals.index(first_vt_item)
+                            if priority_relationship[ter_index][first_vt_index] != '':
+                                print("文法不是算符文法")
+                                return False
+                            priority_relationship[ter_index][first_vt_index] = '<'
+                elif gra[i] in non_terminals:
+                    if gra[i + 1] in terminals:
+                        ter_index = terminals.index(gra[i + 1])
+                        for last_vt_item in last_vt[gra[i]]:
+                            last_vt_index = terminals.index(last_vt_item)
+                            if priority_relationship[last_vt_index][ter_index] != '':
+                                print("文法不是算符文法")
+                                return False
+                            priority_relationship[last_vt_index][ter_index] = '>'
 
 
 if __name__ == '__main__':
+    non_terminals = []  # 非终结符
+    terminals = []  # 终结符
+    priority_relationship = []  #优先关系表
+    first_vt = {}
+    last_vt = {}
     print("请输入一个文法：")
-    grammer = sys.stdin.read().splitlines()
-    grammer = [e for e in grammer if e != '']
-    print(grammer)
-    CompilationPrinciple.process(grammer)
-    priorityRelationship = np.full((len(CompilationPrinciple.non_ter), len(CompilationPrinciple.terSymbol)), '')
-    if constructPriorityList(grammer):
-        print(priorityRelationship)
-
+    grammar = sys.stdin.read().splitlines()
+    grammar = [e for e in grammar if e != '']
+    print(grammar)
+    for gr in grammar:
+        if gr[0] not in non_terminals:
+            non_terminals.append(gr[0])
+    for gr in grammar:
+        for i in range(len(gr)):
+            if gr[i] not in non_terminals and gr[i] not in terminals:
+                if gr[i] != '|' and gr[i] != '→' and gr[i] != ' ':
+                    terminals.append(gr[i])
+    print(non_terminals)
+    print(terminals)
+    first_vt, last_vt = calculate_first_and_last(grammar, non_terminals, terminals)
+    print(first_vt)
+    print(last_vt)
+    priority_relationship = np.full((len(terminals), len(terminals)), '')
+    construct_priority_list(grammar)
+    print(priority_relationship)
     # table = PrettyTable(['gfdgd', 'sdfsdf', 'sdfd', 'sdf'])
     # table.align['gfdgd'] = "l"  # Left align city names
     #
@@ -66,12 +78,3 @@ if __name__ == '__main__':
     # table.add_row(['1', 'server01', '服务器01', '172.16.0.1'])
     # table.add_row(['2', 'server02', '服务器02', '172.16.0.2'])
     # print(table)
-
-# from graphviz import Digraph
-#
-# if __name__ == '__main__':
-#   g = Digraph('G', filename='hello.gv')
-#   g.node('node1', label='Hello')
-#   g.node('node2', label='World')
-#   g.edge('node1', 'node2')
-#   g.view()
