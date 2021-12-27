@@ -1,5 +1,7 @@
 import sys
 import copy
+import graphviz
+from prettytable import PrettyTable
 
 def read_grammars():
     terminals = []
@@ -13,6 +15,7 @@ def read_grammars():
     for gr in grammar:
         if gr[0] not in nonterminals:
             nonterminals.append(gr[0])
+    for gr in grammar:
         for i in range(len(gr)):
             if gr[i] not in nonterminals and gr[i] not in terminals:
                 # 箭头输入是→
@@ -86,6 +89,17 @@ def goto(item_set, symbol, nonterminals, productions):
     new_item_set = closure(new_item_set, nonterminals, productions)
     return new_item_set
 
+def item_set_to_str(item_set, index):
+    result = str(index) + '\n'
+    for item in item_set:
+        item_str = item[0]
+        item_str += '→'
+        for symbol in item[1]:
+            item_str += symbol
+        result += item_str
+        result += '\n'
+    return result
+
 def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
     """
     Calculate the item sets and goto table for a given grammar.
@@ -150,16 +164,41 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
                     elif [i, item_sets.index(new_item_set), terminal] not in goto_table:
                         goto_table.append([i, item_sets.index(new_item_set), terminal])
     if show is True:
-        print('Item sets number: ', len(item_sets))
-        print('Item sets:')
+        # print('Item sets number: ', len(item_sets))
+        # print('Item sets:')
+        # for i, item_set in enumerate(item_sets):
+        #     print('Item set ', i)
+        #     print(item_set)
+        item_set_str = []
+        # Convert items to string
         for i, item_set in enumerate(item_sets):
-            print('Item set ', i)
-            print(item_set)
-        print('Transfer number: ', len(goto_table))
-        print('Goto tables:')
-        for gt in goto_table:
-            print(gt)
-    pass
+            item_set_str.append(item_set_to_str(item_set, i))
+        
+        # Draw DFA
+        f = graphviz.Digraph('deterministic finite automaton', filename='dfa.gv')
+        f.attr(rankdir='LR', size='8,5')
+
+        f.attr('node', shape='rectangle')
+        for i in range(len(item_sets)):
+            for gt in goto_table:
+                if gt[0] == i:
+                    f.edge(item_set_str[i], item_set_str[gt[1]], gt[2])
+
+        f.view()
+        print('Goto table:')
+        # E' will not appear in the table
+        column = ['state'] + terminals + nonterminals[1:]
+        print(column)
+        table = PrettyTable(column)
+        for i in range(len(item_sets)):
+            row = [' ']*(len(column)-1)
+            for gt in goto_table:
+                if gt[0] == i:
+                    row[column.index(gt[2])-1] = gt[1]
+            row.insert(0, i)
+            table.add_row(row)
+        print(table)
+    return item_sets, goto_table
 
 if __name__ =='__main__':
 
