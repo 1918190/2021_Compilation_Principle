@@ -1,0 +1,121 @@
+digraph "deterministic finite automaton" {
+	rankdir=LR size="8,5"
+	node [shape=rectangle]
+	"0
+S→·E
+E→·aA
+E→·bB
+" -> "1
+S→E·
+" [label=E]
+	"0
+S→·E
+E→·aA
+E→·bB
+" -> "2
+E→a·A
+A→·cA
+A→·d
+" [label=a]
+	"0
+S→·E
+E→·aA
+E→·bB
+" -> "3
+E→b·B
+B→·cB
+B→·d
+" [label=b]
+	"2
+E→a·A
+A→·cA
+A→·d
+" -> "4
+E→aA·
+" [label=A]
+	"2
+E→a·A
+A→·cA
+A→·d
+" -> "5
+A→c·A
+A→·cA
+A→·d
+" [label=c]
+	"2
+E→a·A
+A→·cA
+A→·d
+" -> "6
+A→d·
+" [label=d]
+	"3
+E→b·B
+B→·cB
+B→·d
+" -> "7
+E→bB·
+" [label=B]
+	"3
+E→b·B
+B→·cB
+B→·d
+" -> "8
+B→c·B
+B→·cB
+B→·d
+" [label=c]
+	"3
+E→b·B
+B→·cB
+B→·d
+" -> "9
+B→d·
+" [label=d]
+	"5
+A→c·A
+A→·cA
+A→·d
+" -> "10
+A→cA·
+" [label=A]
+	"5
+A→c·A
+A→·cA
+A→·d
+" -> "5
+A→c·A
+A→·cA
+A→·d
+" [label=c]
+	"5
+A→c·A
+A→·cA
+A→·d
+" -> "6
+A→d·
+" [label=d]
+	"8
+B→c·B
+B→·cB
+B→·d
+" -> "11
+B→cB·
+" [label=B]
+	"8
+B→c·B
+B→·cB
+B→·d
+" -> "8
+B→c·B
+B→·cB
+B→·d
+" [label=c]
+	"8
+B→c·B
+B→·cB
+B→·d
+" -> "9
+B→d·
+" [label=d]
+}
