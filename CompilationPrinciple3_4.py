@@ -101,7 +101,9 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
         
         The item sets of the given grammar. 
 
-        [['E', ['·', '(', 'i', ')']]]
+        [
+            [['E', ['·', '(', 'i', ')']]]
+        ]
 
         In the example above, the given grammar has one item set with one item.
         The index of item set is its index in the list.
