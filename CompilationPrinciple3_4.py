@@ -28,7 +28,7 @@ def read_grammars():
             production.append(gr[0])
             production.append(list(result))
             productions.append(production)
-    return terminals, nonterminals, productions
+    return terminals, nonterminals, productions, grammar
 
 def get_item_set(production):
     """
@@ -100,9 +100,9 @@ def item_set_to_str(item_set, index):
         result += '\n'
     return result
 
-def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
+def get_lr0_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
     """
-    Calculate the item sets and goto table for a given grammar.
+    Calculate the LR(0) item sets and goto table for a given grammar.
     The terminals, nonterminals and productions should be provided.
 
     Args:
@@ -197,9 +197,9 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
 
 if __name__ =='__main__':
 
-    terminals, nonterminals, productions = read_grammars()         
+    terminals, nonterminals, productions, grammar = read_grammars()         
     print('Terminals: ', terminals)
     print('Nonterminals: ', nonterminals)
     print('Productions: ', productions)
 
-    get_item_sets_from_grammar(terminals, nonterminals, productions)
+    get_lr0_item_sets_from_grammar(terminals, nonterminals, productions)

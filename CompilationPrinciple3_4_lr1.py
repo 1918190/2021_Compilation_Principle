@@ -3,6 +3,7 @@ import copy
 import graphviz
 from prettytable import PrettyTable
 from CompilationPrinciple3_4 import read_grammars
+from first import get_first
 
 def get_item_set(production):
     """
@@ -17,7 +18,7 @@ def get_item_set(production):
     item_set = [result]
     return item_set
 
-def closure(item_set, nonterminals, productions):
+def closure(item_set, nonterminals, productions, first_set):
     """
     Calculate the closure of an item set.
     """
@@ -25,25 +26,47 @@ def closure(item_set, nonterminals, productions):
     while change is True:
         change = False
         for i in range(len(item_set)):
+            # an item A -> a·Bc, a
             # the right part of a production
             right = item_set[i][1]
+            index = right.index('·')
+
             # the '·' is the last character
-            if right.index('·') == len(right)-1:
+            if index == len(right)-1:
                 continue
+
+            # the expected symbol is the last symbol
+            target = ''
+            if index == len(right)-2:
+                target = item_set[i][2]
+            else:
+                target = right[index+2]
             expected = right[right.index('·')+1]
             if expected in nonterminals:
                 for production in productions:
                     if production[0] == expected:
+                        # find B -> y for A -> a·Bc
+                        # if c is nonterminal, find first(ca), otherwise c is the first set
+                        if target in nonterminals:
+                            first = first_set[target]
+                            if '@' in first and item_set[i][2] not in first:
+                                first.add(item_set[i][2])
+                        else:
+                            first = {target}
                         new_item = [production[0]]
                         production_right = production[1].copy()
                         production_right.insert(0, '·')
                         new_item.append(production_right)
-                        if new_item not in item_set:
-                            change = True
-                            item_set.append(new_item)
+                        # for every symbol in first, add a new item
+                        for forward_symbol in first:
+                            new_item.append(forward_symbol)    
+                            if new_item not in item_set:
+                                change = True
+                                item_set.append(copy.deepcopy(new_item))
+                            new_item.pop(2)
     return item_set
 
-def goto(item_set, symbol, nonterminals, productions):
+def goto(item_set, symbol, nonterminals, productions, first_set):
     """
     Generate a new item set, the given item set will
     transfer to the new item set if it receives the given symbol.
@@ -61,7 +84,7 @@ def goto(item_set, symbol, nonterminals, productions):
             new_item = copy.deepcopy(item)
             new_item[1][index], new_item[1][index+1] = new_item[1][index+1], new_item[1][index]
             new_item_set.append(new_item)
-    new_item_set = closure(new_item_set, nonterminals, productions)
+    new_item_set = closure(new_item_set, nonterminals, productions, first_set)
     return new_item_set
 
 def item_set_to_str(item_set, index):
@@ -72,18 +95,21 @@ def item_set_to_str(item_set, index):
         for symbol in item[1]:
             item_str += symbol
         result += item_str
+        result += ','
+        result += item[2]
         result += '\n'
     return result
 
-def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
+def get_lr1_item_sets_from_grammar(terminals, nonterminals, productions, first_set, show=True):
     """
-    Calculate the item sets and goto table for a given grammar.
+    Calculate the LR(1) item sets and goto table for a given grammar.
     The terminals, nonterminals and productions should be provided.
 
     Args:
         terminals: A list of terminals.
         nonterminals: A list of nonterminals.
         productions: A list of productions.
+        first: The first set of all nonterminals.
         show: Show the result table or DFA, default is True.
     Returns:
         item_sets: 
@@ -91,7 +117,7 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
         The item sets of the given grammar. 
 
         [
-            [['E', ['·', '(', 'i', ')']]]
+            [['B', ['a', 'B', '·'], a], ['B', ['a', 'B', '·'], b]]
         ]
 
         In the example above, the given grammar has one item set with one item.
@@ -101,7 +127,7 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
 
         The goto table of the given grammar.
 
-        [[0, 1, 'E']]
+        [[2, 5, 'B']]
 
         In the example above, the given grammer has one item in its goto table.
         It says that item set 0 will go to item set 1 when meeting symbol 'E'.
@@ -109,7 +135,7 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
     """
     # Create initial state
     item_sets = []
-    initial = closure(get_item_set(productions[0]), nonterminals, productions)
+    initial = closure(get_item_set(productions[0]), nonterminals, productions, first_set)
     item_sets.append(initial)
 
     # Loop
@@ -120,7 +146,7 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
         change = False
         for i in range(len(item_sets)):
             for nonterminal in nonterminals:
-                new_item_set = goto(item_sets[i], nonterminal, nonterminals, productions)
+                new_item_set = goto(item_sets[i], nonterminal, nonterminals, productions, first_set)
                 if len(new_item_set) != 0:
                     if new_item_set not in item_sets:
                         change = True
@@ -130,7 +156,7 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
                         goto_table.append([i, item_sets.index(new_item_set), nonterminal])
 
             for terminal in terminals:
-                new_item_set = goto(item_sets[i], terminal, nonterminals, productions)
+                new_item_set = goto(item_sets[i], terminal, nonterminals, productions, first_set)
                 if len(new_item_set) != 0:
                     if new_item_set not in item_sets:
                         change = True
@@ -172,9 +198,12 @@ def get_item_sets_from_grammar(terminals, nonterminals, productions, show=True):
 
 if __name__ =='__main__':
 
-    terminals, nonterminals, productions = read_grammars()         
+    terminals, nonterminals, productions, grammar = read_grammars()         
     print('Terminals: ', terminals)
     print('Nonterminals: ', nonterminals)
     print('Productions: ', productions)
 
-    get_item_sets_from_grammar(terminals, nonterminals, productions)
+    # Calculate first set, the result will be a dictionary, the keys are nonterminals and values are their first set.
+    f = get_first(terminals, nonterminals, grammar)
+
+    get_lr1_item_sets_from_grammar(terminals, nonterminals, productions, f)
