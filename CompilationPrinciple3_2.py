@@ -45,10 +45,19 @@ def construct_priority_list(grammer):
                             priority_relationship[last_vt_index][ter_index] = '>'
 
 
+def print_priority_relationship(priority_relationship):
+    table_header = ["Priority relationship"] + terminals
+    table = PrettyTable(table_header)
+    for i in range(len(terminals)):
+        tmp_row = [terminals[i]] + priority_relationship[i].tolist()
+        table.add_row(tmp_row)
+    print(table)
+
+
 if __name__ == '__main__':
     non_terminals = []  # 非终结符
     terminals = []  # 终结符
-    priority_relationship = []  #优先关系表
+    priority_relationship = []  # 优先关系表
     first_vt = {}
     last_vt = {}
     print("请输入一个文法：")
@@ -70,11 +79,7 @@ if __name__ == '__main__':
     print(last_vt)
     priority_relationship = np.full((len(terminals), len(terminals)), '')
     construct_priority_list(grammar)
+    print("priority_relationship:")
     print(priority_relationship)
-    # table = PrettyTable(['gfdgd', 'sdfsdf', 'sdfd', 'sdf'])
-    # table.align['gfdgd'] = "l"  # Left align city names
-    #
-    # table.padding_width = 1  # One space between column edges and contents (default)
-    # table.add_row(['1', 'server01', '服务器01', '172.16.0.1'])
-    # table.add_row(['2', 'server02', '服务器02', '172.16.0.2'])
-    # print(table)
+    print_priority_relationship(priority_relationship)
+
