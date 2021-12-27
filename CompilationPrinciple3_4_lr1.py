@@ -2,43 +2,18 @@ import sys
 import copy
 import graphviz
 from prettytable import PrettyTable
-
-def read_grammars():
-    terminals = []
-    nonterminals = []
-    productions = []
-    
-    print("请输入一个文法：")
-    grammar = sys.stdin.read().splitlines()
-    grammar = [e for e in grammar if e != '']
-    print(grammar)
-    for gr in grammar:
-        if gr[0] not in nonterminals:
-            nonterminals.append(gr[0])
-    for gr in grammar:
-        for i in range(len(gr)):
-            if gr[i] not in nonterminals and gr[i] not in terminals:
-                # 箭头输入是→
-                if gr[i] != '|' and gr[i] != '→' and gr[i] != ' ':
-                    terminals.append(gr[i])
-        # Remove space and split by '|' symbol
-        results = ('').join(gr[2:].split(' ')).split('|')
-        for result in results:
-            production = []
-            production.append(gr[0])
-            production.append(list(result))
-            productions.append(production)
-    return terminals, nonterminals, productions
+from CompilationPrinciple3_4 import read_grammars
 
 def get_item_set(production):
     """
     Calculate an initial item set from a production.
     The format of item is as follows.
-    ['E', ['·', '(', 'i', ')']]
+    ['S', ['·', 'B', 'B'], '#']
     The item set is a list of items.
     """
     result = copy.deepcopy(production)
     result[1].insert(0, '·')
+    result.append('#')
     item_set = [result]
     return item_set
 
