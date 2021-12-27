@@ -3,7 +3,7 @@ import numpy as np
 import copy
 
 
-def init_first_matrix(grammar, first_boolean_matrix, first_stack):
+def init_first_matrix(grammar, first_boolean_matrix, first_stack, non_terminals, terminals):
     for gra_line in grammar:
         for i in range(len(gra_line) - 1):
             if gra_line[i] == '→' or gra_line[i] == '|':
@@ -20,7 +20,7 @@ def init_first_matrix(grammar, first_boolean_matrix, first_stack):
                         first_stack.append([gra_line[0], gra_line[i + 2]])
 
 
-def calculate_first(grammar, first_boolean_matrix, first_stack):
+def calculate_first(grammar, first_boolean_matrix, first_stack, non_terminals, terminals):
     while len(first_stack) > 0:
         tmp = first_stack.pop()
         for gra in grammar:
@@ -33,7 +33,7 @@ def calculate_first(grammar, first_boolean_matrix, first_stack):
                         first_stack.append([gra[0], tmp[1]])
 
 
-def init_last_matrix(grammar, last_boolean_matrix, last_stack):
+def init_last_matrix(grammar, last_boolean_matrix, last_stack, non_terminals, terminals):
     for gra_line in grammar:
         for i in range(len(gra_line)):
             if i == (len(gra_line) - 1) or (i < (len(gra_line) - 1) and gra_line[i + 1] == '|'):
@@ -50,7 +50,7 @@ def init_last_matrix(grammar, last_boolean_matrix, last_stack):
                         last_stack.append([gra_line[0], gra_line[i - 1]])
 
 
-def calculate_last(grammar, last_boolean_matrix, last_stack):
+def calculate_last(grammar, last_boolean_matrix, last_stack, non_terminals, terminals):
     while len(last_stack) > 0:
         tmp = last_stack.pop()
         for gra in grammar:
@@ -63,7 +63,7 @@ def calculate_last(grammar, last_boolean_matrix, last_stack):
                         last_stack.append([gra[0], tmp[1]])
 
 
-def print_vt(first_boolean_matrix, last_boolean_matrix):
+def print_vt(first_boolean_matrix, last_boolean_matrix, non_terminals, terminals):
     first_vt = {}
     last_vt = {}
     for firstVT in non_terminals:
@@ -93,7 +93,7 @@ def print_vt(first_boolean_matrix, last_boolean_matrix):
     return first_vt, last_vt
 
 
-def calculate_first_and_last(grammar):
+def calculate_first_and_last(grammar, non_terminals, terminals):
     first_stack = []  # firstVT的栈
     last_stack = []  # lastVT的栈
     boolean_matrix = np.full((len(non_terminals), len(terminals)), 'F')
@@ -101,21 +101,21 @@ def calculate_first_and_last(grammar):
     last_boolean_matrix = copy.deepcopy(boolean_matrix)
     print("first_boolean_matrix:")
     print(first_boolean_matrix)
-    init_first_matrix(grammar, first_boolean_matrix, first_stack)
+    init_first_matrix(grammar, first_boolean_matrix, first_stack, non_terminals, terminals)
     print("first_boolean_matrix:")
     print(first_boolean_matrix)
-    calculate_first(grammar, first_boolean_matrix, first_stack)
+    calculate_first(grammar, first_boolean_matrix, first_stack, non_terminals, terminals)
     print("first_boolean_matrix:")
     print(first_boolean_matrix)
     print("last_boolean_matrix:")
     print(last_boolean_matrix)
-    init_last_matrix(grammar, last_boolean_matrix, last_stack)
+    init_last_matrix(grammar, last_boolean_matrix, last_stack, non_terminals, terminals)
     print("last_boolean_matrix:")
     print(last_boolean_matrix)
-    calculate_last(grammar, last_boolean_matrix, last_stack)
+    calculate_last(grammar, last_boolean_matrix, last_stack, non_terminals, terminals)
     print("last_boolean_matrix:")
     print(last_boolean_matrix)
-    return print_vt(first_boolean_matrix, last_boolean_matrix)
+    return print_vt(first_boolean_matrix, last_boolean_matrix, non_terminals, terminals)
 
 
 # 输入示例：
@@ -151,6 +151,6 @@ if __name__ == '__main__':
                     terminals.append(gr[i])
     print(non_terminals)
     print(terminals)
-    first_vt, last_vt = calculate_first_and_last(grammar)
+    first_vt, last_vt = calculate_first_and_last(grammar, non_terminals, terminals)
     print(first_vt)
     print(last_vt)
