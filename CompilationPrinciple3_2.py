@@ -4,7 +4,7 @@ import CompilationPrinciple3_1
 from CompilationPrinciple3_1 import *
 
 
-def construct_priority_list(grammer):
+def construct_priority_list(grammer, priority_relationship, first_vt, last_vt, non_terminals, terminals):
     for gra_line in grammer:
         gra_line = gra_line.split('→')[1]
         gra_list = gra_line.split('|')
@@ -45,7 +45,7 @@ def construct_priority_list(grammer):
                             priority_relationship[last_vt_index][ter_index] = '>'
 
 
-def print_priority_relationship(priority_relationship):
+def print_priority_relationship(priority_relationship, terminals):
     table_header = ["Priority relationship"] + terminals
     table = PrettyTable(table_header)
     for i in range(len(terminals)):
@@ -54,12 +54,22 @@ def print_priority_relationship(priority_relationship):
     print(table)
 
 
+def calculate_priority_list(grammar, non_terminals, terminals):
+    first_vt, last_vt = calculate_first_and_last(grammar, non_terminals, terminals)
+    print(first_vt)
+    print(last_vt)
+    priority_relationship = np.full((len(terminals), len(terminals)), '')
+    construct_priority_list(grammar, priority_relationship, first_vt, last_vt, non_terminals, terminals)
+    print("priority_relationship:")
+    print(priority_relationship)
+    print_priority_relationship(priority_relationship, terminals)
+    return priority_relationship
+
+
 if __name__ == '__main__':
     non_terminals = []  # 非终结符
     terminals = []  # 终结符
     priority_relationship = []  # 优先关系表
-    first_vt = {}
-    last_vt = {}
     print("请输入一个文法：")
     grammar = sys.stdin.read().splitlines()
     grammar = [e for e in grammar if e != '']
@@ -74,12 +84,5 @@ if __name__ == '__main__':
                     terminals.append(gr[i])
     print(non_terminals)
     print(terminals)
-    first_vt, last_vt = calculate_first_and_last(grammar, non_terminals, terminals)
-    print(first_vt)
-    print(last_vt)
-    priority_relationship = np.full((len(terminals), len(terminals)), '')
-    construct_priority_list(grammar)
-    print("priority_relationship:")
+    priority_relationship = calculate_priority_list(grammar, non_terminals, terminals)
     print(priority_relationship)
-    print_priority_relationship(priority_relationship)
-
