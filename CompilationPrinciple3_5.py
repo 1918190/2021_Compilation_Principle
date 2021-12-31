@@ -62,6 +62,9 @@ def get_v():
     print("得到终结符集合：" + str(VT))
     print("所有的符号集合" + str(Vs))
 
+    # print("VT2Int:" + str(VT2Int))
+    # print("VN2Int:" + str(VN2Int))
+
 
 def dot_gram():
     # 为所有产生式加点
@@ -363,22 +366,23 @@ def print_items():
 def print_lr_table():
     # 表头
     print('----LR分析表----')
-    print('|\t', end='')
-    print(('%4s' % '') * (len(VT) - 3), end='')
+    print('\t', end='')
+    print(('%4s' % '') * len(VT), end='')
     print('Action', end='')
-    print(('%4s' % '') * (len(VT) - 3), end='')
-    print('\t|\t', end='')
-    print(('%3s' % '') * (len(VN) - 2), end='')
+    print('\t\t', end='')
+    print(('%3s' % '') * len(VN), end='')
     print('GOTO', end='')
-    print(('%3s' % '') * (len(VN) - 2), end='')
-    print('\t|')
+    print('\t')
+    for i in range(len(dot_grams)):
+        print('---', end='')
+    print()
     print('\t\t', end='')
     for i in VT:
         print('%4s' % i, end='')
     print('\t|\t', end='')
     k = 0
     for i in VN:
-        print('%3s\t' % i, end='')
+        print('%4s' % i, end='')
     print('\t|')
     for i in range(len(dot_grams)):
         print('---', end='')
@@ -402,7 +406,6 @@ def print_lr_table():
 
 if __name__ == '__main__':
 
-    # print("当前路径 -  %s" %os.getcwd())
     if(len(grams)==0):
         with open("./2021_Compilation_Principle/1.txt", "r") as f:
             for line in f:
