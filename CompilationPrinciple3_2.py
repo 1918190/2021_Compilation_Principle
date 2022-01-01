@@ -4,8 +4,8 @@ import CompilationPrinciple3_1
 from CompilationPrinciple3_1 import *
 
 
-def construct_priority_list(grammer, priority_relationship, first_vt, last_vt, non_terminals, terminals):
-    for gra_line in grammer:
+def construct_priority_list(grammar, priority_relationship, first_vt, last_vt, non_terminals, terminals):
+    for gra_line in grammar:
         gra_line = gra_line.split('→')[1]
         gra_list = gra_line.split('|')
         for gra in gra_list:
@@ -54,7 +54,7 @@ def print_priority_relationship(priority_relationship, terminals):
     print(table)
 
 
-def calculate_priority_list(grammar, non_terminals, terminals):
+def calculate_priority_list(grammar, non_terminals, terminals, add_sentence_terminal):
     first_vt, last_vt = calculate_first_and_last(grammar, non_terminals, terminals)
     print(first_vt)
     print(last_vt)
@@ -63,6 +63,19 @@ def calculate_priority_list(grammar, non_terminals, terminals):
     print("priority_relationship:")
     print(priority_relationship)
     print_priority_relationship(priority_relationship, terminals)
+    if add_sentence_terminal:
+        row = np.full((1, len(terminals)), '')
+        for item in first_vt[non_terminals[0]]:
+            index = terminals.index(item)
+            row[0][index] = '<'
+        priority_relationship = np.append(priority_relationship, row, axis=0)
+        terminals.append('#')
+        column = np.full((len(terminals), 1), '')
+        for item in last_vt[non_terminals[0]]:
+            index = terminals.index(item)
+            column[index][0] = '>'
+        column[len(terminals) - 1][0] = '='
+        priority_relationship = np.append(priority_relationship, column, axis=1)
     return priority_relationship
 
 
@@ -84,5 +97,5 @@ if __name__ == '__main__':
                     terminals.append(gr[i])
     print(non_terminals)
     print(terminals)
-    priority_relationship = calculate_priority_list(grammar, non_terminals, terminals)
+    priority_relationship = calculate_priority_list(grammar, non_terminals, terminals, False)
     print(priority_relationship)
