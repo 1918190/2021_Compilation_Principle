@@ -1,8 +1,7 @@
-
 # 变量声明
 ACTION = []
 GOTO = []
-grams = [] # 用于存放文法字符串 ["S->cA", "S->ccB", "A->cA", "A->a", "B->ccB", "B->b"]
+grams = []  # 用于存放文法字符串 ["S->cA", "S->ccB", "A->cA", "A->a", "B->ccB", "B->b"]
 #grams = ["S->cA", "S->ccB", "A->cA", "A->a", "B->ccB", "B->b"]
 #grams = ["S->A", "S->B", "A->aAb", "A->c", "B->aBb", "B->d"]
 dot_grams = []
@@ -24,8 +23,8 @@ now_step = 0  # 当前步骤
 
 # print(grams)
 
-
 #------------------预处理---------------#
+
 
 # 划分终结符和非终结符
 def get_v():
@@ -33,20 +32,20 @@ def get_v():
     vn_num = 0
     vt_num = 0
     for s in grams:
-        x,y = s.split("->")
+        x, y = s.split("->")
         # print(x,y)
-        if(x not in VN):
+        if (x not in VN):
             VN.append(x)
             VN2Int.update({x: vn_num})
             vn_num = vn_num + 1
         for v in y:
-            if(v.isupper()):
-                if(v not in VN):
+            if (v.isupper()):
+                if (v not in VN):
                     VN.append(v)
                     VN2Int.update({v: vn_num})
                     vn_num = vn_num + 1
             else:
-                if(v not in VT):
+                if (v not in VT):
                     VT.append(v)
                     VT2Int.update({v: vt_num})
                     vt_num = vt_num + 1
@@ -58,7 +57,7 @@ def get_v():
 
     VT.append("#")
     VT2Int.update({"#": vt_num})
-    print("得到非终结符集合："+ str(VN))
+    print("得到非终结符集合：" + str(VN))
     print("得到终结符集合：" + str(VT))
     print("所有的符号集合" + str(Vs))
 
@@ -73,25 +72,26 @@ def dot_gram():
 
     for gram in grams:
         ind = gram.find("->")
-        for i in range(len(gram)-ind-1):
-            tmp = gram[:ind+2+i] + "." + gram[ind+2+i:]
+        for i in range(len(gram) - ind - 1):
+            tmp = gram[:ind + 2 + i] + "." + gram[ind + 2 + i:]
             # print(tmp)
             dot_grams.append(tmp)
 
 
 # print(str(dot_grams))
 
-
 #------------构造DNF代码---------------------#
+
 
 def get_VN_gram(v):
     # 返回非终结符产生的A->.aBb形式
     res = []
     for gram in dot_grams:
         ind = gram.find("->")
-        if(gram[0]==v and gram[ind+2]=="."):
+        if (gram[0] == v and gram[ind + 2] == "."):
             res.append(gram)
     return res
+
 
 # print(get_VN_gram("A"))
 
@@ -100,16 +100,16 @@ def get_CLOSURE(tmp):
     # 生成闭包
     CLOSURE = []
     for it in tmp:
-        if(it not in CLOSURE):
+        if (it not in CLOSURE):
             CLOSURE.append(it)
         x, y = it.split(".")
-        if(y == ""):
+        if (y == ""):
             continue
         v = y[0]
-        if(v in VN):
+        if (v in VN):
             res = get_VN_gram(v)
             for re in res:
-                if(re not in CLOSURE):
+                if (re not in CLOSURE):
                     CLOSURE.append(re)
 
     return CLOSURE
@@ -117,30 +117,31 @@ def get_CLOSURE(tmp):
 
 def is_inItems(new_item):
     #判断item是否已经存在, 存在返回位置，不存在返回-1
-    if(new_item == None):
+    if (new_item == None):
         return -1
 
     new_set = set(new_item)
-    num=0
+    num = 0
     for item in items:
         old_set = set(item)
-        if(old_set == new_set):
+        if (old_set == new_set):
             return num
         num = num + 1
 
     return -1
+
 
 def go(item, v):
     #生成并返回下一个item
     tmp = []
     for it in item:
         x, y = it.split(".")
-        if(y!=""):
-            if(y[0] == v):
+        if (y != ""):
+            if (y[0] == v):
                 new_it = x + y[0] + "." + y[1:]
                 tmp.append(new_it)
 
-    if(len(tmp)!=0):
+    if (len(tmp) != 0):
         new_item = get_CLOSURE(tmp)
         #print(tmp)
         #print("go(item, "+v + ") = " + str(new_item))
@@ -157,17 +158,17 @@ def get_items():
     dot_gram()
 
     for it in item:
-        v = it[it.find(".")+1]
-        if(v in VN):
+        v = it[it.find(".") + 1]
+        if (v in VN):
             res = get_VN_gram(v)
             for re in res:
-                if(re not in item):
+                if (re not in item):
                     item.append(re)
 
     # print("I0 is :" + str(item))
     items.append(item)
 
-    num=0
+    num = 0
     for item in items:
         for v in Vs:
             # print("item is %s," % str(item) + "v is %s" % v)
@@ -190,7 +191,7 @@ def init_lr_table():
     for h in range(len(items)):
         ACTION.append([])
         GOTO.append([])
-        for w1 in range(len(VT)+1):
+        for w1 in range(len(VT) + 1):
             ACTION[h].append("  ")
         for w2 in range(len(VN)):
             GOTO[h].append("  ")
@@ -198,18 +199,18 @@ def init_lr_table():
 
 def lr_is_legal():
     # 判别lr是否合法
-    has_protocol = 0 #是否存在规约项目
-    has_shift = 0 #是否存在移进项目
+    has_protocol = 0  #是否存在规约项目
+    has_shift = 0  #是否存在移进项目
 
     for item in items:
         for it in item:
             x, y = it.split(".")
-            if(y ==""):
-                if(has_protocol != 0 or has_shift != 0):
+            if (y == ""):
+                if (has_protocol != 0 or has_shift != 0):
                     return False
                 has_protocol = 1
             else:
-                if(y[0] in VT):
+                if (y[0] in VT):
                     has_shift = 1
     return True
 
@@ -217,7 +218,7 @@ def lr_is_legal():
 def find_gram(it):
 
     x, y = it.split(".")
-    mgram = x+y
+    mgram = x + y
     try:
         ind = grams.index(mgram)
         return ind
@@ -229,32 +230,33 @@ dot_gram()
 print(dot_grams[1])
 print(find_gram(dot_grams[1]))
 
+
 def get_lr_table():
     #构建lr分析表
     init_lr_table()
     lr_is_legal()
-    i=0
-    j=0
+    i = 0
+    j = 0
     for item in items:
         for it in item:
             x, y = it.split(".")
-            if(y==""): #判断是否写入ACTION
+            if (y == ""):  #判断是否写入ACTION
                 if (it == "S'->S."):
-                    ACTION[i][len(VT)-1] = "acc"
+                    ACTION[i][len(VT) - 1] = "acc"
                 ind = find_gram(it)
-                if(ind != -1):
+                if (ind != -1):
                     for k in range(len(ACTION[i])):
-                        ACTION[i][k]="r"+str(ind+1)
+                        ACTION[i][k] = "r" + str(ind + 1)
 
             else:
                 next_item = go(item, y[0])
                 # print("go(%s, %s)-->%s" % (str(item), y[0], str(next_item)))
                 ind = is_inItems(next_item)
-                if(ind != -1): #判断是否写入GOTO
+                if (ind != -1):  #判断是否写入GOTO
                     if (y[0] in VT):
                         j = VT2Int[y[0]]
                         ACTION[i][j] = "s" + str(ind)
-                    if(y[0] in VN):
+                    if (y[0] in VN):
                         j = VN2Int[y[0]]
                         GOTO[i][j] = ind
         i = i + 1
@@ -274,6 +276,7 @@ def is_end():
 
     return True
 
+
 # 输出
 def output():
     global now_step, status_stack, symbol_stack, input_str, now_state
@@ -282,6 +285,7 @@ def output():
     print('%-20s' % status_stack, end='')
     print('%-50s' % symbol_stack, end='')
     print('%-30s' % input_str[location:len(input_str)], end='')
+
 
 # 统计产生式右部的个数
 def count_right_num(grammar_i):
@@ -313,7 +317,6 @@ def count_right_num(grammar_i):
 #         output()
 #         find = ACTION[now_state][VT2Int[input_ch]]
 
-
 #         if find[0] == 's': # 进入action
 #             symbol_stack.append(input_ch)
 #             status_stack.append(int(find[1]))
@@ -343,25 +346,26 @@ def count_right_num(grammar_i):
 #     print("\n is done")
 #     return 0
 
-
-
 #----------------print代码--------------#
+
 
 def print_grams():
 
     print("----产生式集合----")
     num = 1
     for gram in grams:
-        print("(%d)%s"%(num, str(gram)))
+        print("(%d)%s" % (num, str(gram)))
         num = num + 1
+
 
 def print_items():
 
     print("----状态集合----")
-    num=0
+    num = 0
     for it in items:
-        print("(%d)%s"%(num, str(it)))
+        print("(%d)%s" % (num, str(it)))
         num = num + 1
+
 
 def print_lr_table():
     # 表头
@@ -406,18 +410,17 @@ def print_lr_table():
 
 if __name__ == '__main__':
 
-    if(len(grams)==0):
+    if (len(grams) == 0):
         with open("./2021_Compilation_Principle/1.txt", "r") as f:
             for line in f:
                 line = line.replace('\n', "")
                 grams.append(line)
             f.close()
 
-
-    get_v()     # 分割终结符和非终结符
-    print_grams()    # 输出文法产生式
-    get_items()     # 生成状态集合
-    print_items()   # 输出状态集合
+    get_v()  # 分割终结符和非终结符
+    print_grams()  # 输出文法产生式
+    get_items()  # 生成状态集合
+    print_items()  # 输出状态集合
     get_lr_table()  # 生成lr分析表
     # input_str = "abaaabaaab#"  # 待分析字符串
     # stat = stipulations()   #规约
