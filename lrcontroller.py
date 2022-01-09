@@ -14,8 +14,6 @@ def is_end(location, input_str, symbol_stack):
     else:
         return False
 
-    return True
-
 
 def stipulations(action_table, goto_table, sentence, grammar, terminals,
                  nonterminals):
@@ -24,15 +22,6 @@ def stipulations(action_table, goto_table, sentence, grammar, terminals,
     status_stack = []
     location = 0
     sentence += '#'
-    # print('----分析过程----')
-    # print("index\t\t", end='')
-    # print('%-20s' % 'Status', end='')
-    # print('%-50s' % 'Symbol', end='')
-    # print('%-30s' % 'Input', end='')
-    # print('Action')
-    # for i in range(len(dot_grams)):
-    #     print('---', end='')
-    # print()
 
     symbol_stack.append('#')
     status_stack.append(0)
@@ -73,10 +62,11 @@ def stipulations(action_table, goto_table, sentence, grammar, terminals,
                 find = goto_table[now_state][g[0]]
                 status_stack.append(find)
                 print('%s' % g)
-        else:
-            return -1
-
-    print("\n is done")
+        elif find == 'acc':
+            # return -1
+            print(grammar[0])
+            print("规约完成！")
+            return 0
     return 0
 
 
@@ -84,9 +74,6 @@ if __name__ == '__main__':
     terminals, nonterminals, productions, grammar = read_grammars()
     print('Terminals: ', terminals)
     print('Nonterminals: ', nonterminals)
-    # print('Productions: ', productions)
-    # item_sets, goto = get_lr0_item_sets_from_grammar(terminals, nonterminals, productions, show=False)
-    # action_table, goto_table = get_lr_table(item_sets, goto, grammar, nonterminals, terminals)
 
     # f = get_first(terminals, nonterminals, grammar)
     f = {'E': {'i', '('}, 'T': {'i', '('}, 'F': {'i', '('}}
