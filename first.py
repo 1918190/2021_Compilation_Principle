@@ -9,6 +9,8 @@ def first(string, terminals, nonterminals, productions_dict):
         alternatives = productions_dict[string]
 
         for alternative in alternatives:
+            if alternative == string:
+                continue
             first_2 = first(alternative, terminals, nonterminals, productions_dict)
             first_ = first_ |first_2
 

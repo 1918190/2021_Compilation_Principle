@@ -45,8 +45,10 @@ def closure(item_set, nonterminals, productions, first_set):
                         # otherwise the first symbol of c is the first set
                         follow_index = index + 2
                         first = set()
-                        if follow_index >= len(right) or right[follow_index] not in nonterminals:
+                        if follow_index >= len(right):
                             first.add(item_set[i][2])
+                        elif right[follow_index] not in nonterminals:
+                            first.add(right[follow_index])
                         else:
                             while follow_index < len(right):
                                 # a terminal is encountered, add it to first set

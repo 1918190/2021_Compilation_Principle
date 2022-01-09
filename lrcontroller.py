@@ -1,5 +1,8 @@
 from GenerateLR0Table import get_lr_table
+from GenerateLR1Table import get_lr1_table
 from CompilationPrinciple3_4 import *
+from CompilationPrinciple3_4_lr1 import get_lr1_item_sets_from_grammar
+from first import get_first
 
 def is_end(location, input_str, symbol_stack):
     if input_str[location:len(input_str)] == '#':
@@ -37,17 +40,20 @@ def stipulations(action_table, goto_table, sentence, grammar, terminals, nonterm
             print("错误字符")
             return -1
         # output()
+        if input_ch not in action_table[now_state]:
+            print('分析错误')
+            return -1
         find = action_table[now_state][input_ch]
 
         if find[0] == 's': # 进入action
             symbol_stack.append(input_ch)
             status_stack.append(int(find[1]))
             location += 1
-            print('action[%s][%s]=s%s' % (now_state, input_ch, find[1]))
+            # print('action[%s][%s]=s%s' % (now_state, input_ch, find[1]))
 
         elif find[0] == 'r': # 进入goto
             num = int(find[1])
-            g = grammar[num - 1]
+            g = grammar[num]
             right_num = len(g) - 2
             #print("\n%s"%g)
             for i in range(right_num):
@@ -56,12 +62,13 @@ def stipulations(action_table, goto_table, sentence, grammar, terminals, nonterm
             symbol_stack.append(g[0])
             now_state = status_stack[-1]
             symbol_ch = symbol_stack[-1]
-            find = goto_table[now_state][g[0]]
-            if find == -1:
+            if g[0] not in goto_table[now_state]:
                 print('分析失败')
                 return -1
-            status_stack.append(find)
-            print('%s' % g)
+            else:
+                find = goto_table[now_state][g[0]]
+                status_stack.append(find)
+                print('%s' % g)
         else:
             return -1
 
@@ -71,9 +78,22 @@ def stipulations(action_table, goto_table, sentence, grammar, terminals, nonterm
 
 if __name__ == '__main__':
     terminals, nonterminals, productions, grammar = read_grammars()         
+    print('Terminals: ', terminals)
+    print('Nonterminals: ', nonterminals)
+    # print('Productions: ', productions)
+    # item_sets, goto = get_lr0_item_sets_from_grammar(terminals, nonterminals, productions, show=False)
+    # action_table, goto_table = get_lr_table(item_sets, goto, grammar, nonterminals, terminals)
+    
+    # f = get_first(terminals, nonterminals, grammar)
+    f = {
+        'E':{'i', '('},
+        'T':{'i', '('},
+        'F':{'i', '('}
+    }
 
-    item_sets, goto = get_lr0_item_sets_from_grammar(terminals, nonterminals, productions, show=False)
-    action_table, goto_table = get_lr_table(item_sets, goto, grammar, nonterminals, terminals)
+    item_sets, goto = get_lr1_item_sets_from_grammar(terminals, nonterminals, productions, f, show=False)
+    action_table, goto_table = get_lr1_table(item_sets, goto, grammar, nonterminals, terminals)
+    
     print('请输入待分析字符串：')
     sentence = input()
     # sentence = '(i)'

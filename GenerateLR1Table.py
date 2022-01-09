@@ -1,7 +1,9 @@
-from CompilationPrinciple3_4 import *
+from CompilationPrinciple3_4_lr1 import get_lr1_item_sets_from_grammar
+from CompilationPrinciple3_4 import read_grammars
+from first import get_first
 from prettytable import PrettyTable
 
-def get_lr_table(item_sets, goto, grammar, nonterminals, terminals):
+def get_lr1_table(item_sets, goto, grammar, nonterminals, terminals):
     action_table = []
     goto_table = []
     for _ in range(len(item_sets)):
@@ -23,19 +25,18 @@ def get_lr_table(item_sets, goto, grammar, nonterminals, terminals):
                     action_table[item_index]['#'] = 'acc'
                 else:
                     r = 'r' + str(grammar.index(production))
-                    for terminal in terminals:
-                        action_table[item_index][terminal] = r
-                    action_table[item_index]['#'] = r
-                break
+                    action_table[item_index][item[2]] = r
     return action_table, goto_table
 
 
 if __name__ == '__main__':
-    terminals, nonterminals, productions, grammar = read_grammars()         
+    terminals, nonterminals, productions, grammar = read_grammars()
 
-    item_sets, goto = get_lr0_item_sets_from_grammar(terminals, nonterminals, productions, show=False)
-    action_table, goto_table = get_lr_table(item_sets, goto, grammar, nonterminals, terminals)
-    
+    # Calculate first set, the result will be a dictionary, the keys are nonterminals and values are their first set.
+    f = get_first(terminals, nonterminals, grammar)
+
+    item_sets, goto = get_lr1_item_sets_from_grammar(terminals, nonterminals, productions, f, show=False)
+    action_table, goto_table = get_lr1_table(item_sets, goto, grammar, nonterminals, terminals)
     # show tables
     action_column = ['state'] + terminals + ['#']
     goto_column = ['state'] + nonterminals[1:]
