@@ -36,23 +36,36 @@ def closure(item_set, nonterminals, productions, first_set):
                 continue
 
             # the expected symbol is the last symbol
-            target = ''
-            if index == len(right)-2:
-                target = item_set[i][2]
-            else:
-                target = right[index+2]
-            expected = right[right.index('·')+1]
+            expected = right[index+1]
             if expected in nonterminals:
                 for production in productions:
                     if production[0] == expected:
                         # find B -> y for A -> a·Bc
-                        # if c is nonterminal, find first(ca), otherwise c is the first set
-                        if target in nonterminals:
-                            first = first_set[target]
-                            if '@' in first and item_set[i][2] not in first:
-                                first.add(item_set[i][2])
+                        # if c starts with nonterminal, find first(ca), 
+                        # otherwise the first symbol of c is the first set
+                        follow_index = index + 2
+                        first = set()
+                        if follow_index >= len(right) or right[follow_index] not in nonterminals:
+                            first.add(item_set[i][2])
                         else:
-                            first = {target}
+                            while follow_index < len(right):
+                                # a terminal is encountered, add it to first set
+                                if right[follow_index] not in nonterminals:
+                                    first.add(right[follow_index])
+                                    break
+                                # a nonterminal is encountered
+                                new_first = first_set[right[follow_index]]
+                                first = first | new_first
+                                # if epsilon is not in the nonterminal's first set, algorithm end
+                                if '@' not in new_first:
+                                    break
+                                else:
+                                    first.remove('@')
+
+                            # if epsilon in first(c)
+                            if '@' in first:
+                                first.add(item_set[i][2])
+
                         new_item = [production[0]]
                         production_right = production[1].copy()
                         production_right.insert(0, '·')
