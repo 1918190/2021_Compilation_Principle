@@ -1,3 +1,7 @@
+#这是保留注释的构建lr0分析表的文件，仅供其他文件参考
+
+
+
 # 变量声明
 ACTION = []
 GOTO = []
@@ -50,12 +54,14 @@ def get_v():
                     VT2Int.update({v: vt_num})
                     vt_num = vt_num + 1
 
+    VT.append("#")
+
     for vn in VN:
         Vs.append(vn)
     for vt in VT:
         Vs.append(vt)
 
-    VT.append("#")
+    
     VT2Int.update({"#": vt_num})
     print("得到非终结符集合：" + str(VN))
     print("得到终结符集合：" + str(VT))
@@ -249,10 +255,21 @@ def get_lr_table():
                         ACTION[i][k] = "r" + str(ind + 1)
 
             else:
-                next_item = go(item, y[0])
-                # print("go(%s, %s)-->%s" % (str(item), y[0], str(next_item)))
-                ind = is_inItems(next_item)
-                if (ind != -1):  #判断是否写入GOTO
+                # 原先写法
+                # next_item = go(item, y[0])
+                # ind = is_inItems(next_item)
+
+                # 从3_4中获取状态转移表goto_table。命名不太正确，应为书中的GO()函数
+                item_number = is_inItems(item)# 当前项目的序号
+
+                # 在状态转移表中找到当前项目和待输入字符
+                for each_goto_table_line in goto_table:
+                    if each_goto_table_line[0] == item_number & each_goto_table_line[2] == y[0]:
+                        next_item_number = each_goto_table_line[1]# 得到下一状态序号
+
+                # 为了方便，赋给ind
+                ind = next_item_number
+                if (ind != -1):
                     if (y[0] in VT):
                         j = VT2Int[y[0]]
                         ACTION[i][j] = "s" + str(ind)

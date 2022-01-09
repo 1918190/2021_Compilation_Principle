@@ -1,7 +1,7 @@
 import sys
 import copy
-import graphviz
-from prettytable import PrettyTable
+# import graphviz
+# from prettytable import PrettyTable
 
 def read_grammars():
     terminals = []
