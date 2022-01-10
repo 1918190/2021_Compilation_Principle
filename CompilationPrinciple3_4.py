@@ -7,10 +7,15 @@ def read_grammars():
     terminals = []
     nonterminals = []
     productions = []
-    
-    print("请输入一个文法：")
-    grammar = sys.stdin.read().splitlines()
-    grammar = [e for e in grammar if e != '']
+    each_production = []
+    grammar = []
+    print("请输入一个文法：(文法中不能包括S,会自动扩充为增广文法)")
+    while True:
+        grammar_line = sys.stdin.readline().strip('\n')
+        if grammar_line == '':
+            break
+        grammar.append(grammar_line)
+    grammar.insert(0, 'S→' + grammar[0][0])
     print(grammar)
     for gr in grammar:
         if gr[0] not in nonterminals:
@@ -28,7 +33,12 @@ def read_grammars():
             production.append(gr[0])
             production.append(list(result))
             productions.append(production)
-    return terminals, nonterminals, productions, grammar
+    for gra_line in grammar:
+        gra_right = gra_line.split('→')[1]
+        gra_list = gra_right.split('|')
+        for list_item in gra_list:
+            each_production.append(gra_line[:2] + list_item)
+    return terminals, nonterminals, productions, each_production
 
 def get_item_set(production):
     """
