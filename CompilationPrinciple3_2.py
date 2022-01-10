@@ -15,7 +15,7 @@ def construct_priority_list(grammar, priority_relationship, first_vt, last_vt, n
                         first_ter_index = terminals.index(gra[i])
                         second_ter_index = terminals.index(gra[i + 1])
                         if priority_relationship[first_ter_index][second_ter_index] != '':
-                            print("文法不是算符文法")
+                            print("文法不是算符优先文法")
                             return False
                         priority_relationship[first_ter_index][second_ter_index] = '='
                     if i < (len(gra) - 2):
@@ -23,7 +23,7 @@ def construct_priority_list(grammar, priority_relationship, first_vt, last_vt, n
                             first_ter_index = terminals.index(gra[i])
                             second_ter_index = terminals.index(gra[i + 2])
                             if priority_relationship[first_ter_index][second_ter_index] != '':
-                                print("文法不是算符文法")
+                                print("文法不是算符优先文法")
                                 return False
                             priority_relationship[first_ter_index][second_ter_index] = '='
                     if gra[i + 1] in non_terminals:
@@ -31,7 +31,7 @@ def construct_priority_list(grammar, priority_relationship, first_vt, last_vt, n
                         for first_vt_item in first_vt[gra[i + 1]]:
                             first_vt_index = terminals.index(first_vt_item)
                             if priority_relationship[ter_index][first_vt_index] != '':
-                                print("文法不是算符文法")
+                                print("文法不是算符优先文法")
                                 return False
                             priority_relationship[ter_index][first_vt_index] = '<'
                 elif gra[i] in non_terminals:
@@ -40,9 +40,10 @@ def construct_priority_list(grammar, priority_relationship, first_vt, last_vt, n
                         for last_vt_item in last_vt[gra[i]]:
                             last_vt_index = terminals.index(last_vt_item)
                             if priority_relationship[last_vt_index][ter_index] != '':
-                                print("文法不是算符文法")
+                                print("文法不是算符优先文法")
                                 return False
                             priority_relationship[last_vt_index][ter_index] = '>'
+    return True
 
 
 def print_priority_relationship(priority_relationship, terminals):
@@ -59,7 +60,9 @@ def calculate_priority_list(grammar, non_terminals, terminals, add_sentence_term
     print(first_vt)
     print(last_vt)
     priority_relationship = np.full((len(terminals), len(terminals)), '')
-    construct_priority_list(grammar, priority_relationship, first_vt, last_vt, non_terminals, terminals)
+    bool = construct_priority_list(grammar, priority_relationship, first_vt, last_vt, non_terminals, terminals)
+    if not bool:
+        exit(1)
     print("priority_relationship:")
     print(priority_relationship)
     print_priority_relationship(priority_relationship, terminals)

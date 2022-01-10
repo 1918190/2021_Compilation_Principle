@@ -32,6 +32,8 @@ def get_lr1_table(item_sets, goto, grammar, nonterminals, terminals):
 if __name__ == '__main__':
     terminals, nonterminals, productions, grammar = read_grammars()
 
+    print(terminals)
+    print(nonterminals)
     # Calculate first set, the result will be a dictionary, the keys are nonterminals and values are their first set.
     f = get_first(terminals, nonterminals, grammar)
 

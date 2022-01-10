@@ -17,7 +17,7 @@ def is_end(location, input_str, symbol_stack):
 
 def stipulations(action_table, goto_table, sentence, grammar, terminals,
                  nonterminals):
-    # 根据LR(0)表进行规约
+    # 根据LR(1)表进行规约
     symbol_stack = []
     status_stack = []
     location = 0
