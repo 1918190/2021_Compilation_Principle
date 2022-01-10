@@ -40,12 +40,12 @@ def stipulations(action_table, goto_table, sentence, grammar, terminals,
 
         if find[0] == 's':  # 进入action
             symbol_stack.append(input_ch)
-            status_stack.append(int(find[1]))
+            status_stack.append(int(find[1:]))
             location += 1
-            # print('action[%s][%s]=s%s' % (now_state, input_ch, find[1]))
+            print('action[%s][%s]=s%s' % (now_state, input_ch, find[1]))
 
         elif find[0] == 'r':  # 进入goto
-            num = int(find[1])
+            num = int(find[1:])
             g = grammar[num]
             right_num = len(g) - 2
             #print("\n%s"%g)
