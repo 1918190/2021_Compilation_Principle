@@ -2,898 +2,285 @@ digraph "deterministic finite automaton" {
 	rankdir=LR size="8,5"
 	node [shape=rectangle]
 	"0
-G→·E,#
-E→·E+T,#
-E→·T,#
-E→·E+T,+
-E→·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
+E→·S
+S→·AS
+S→·b
+A→·SA
+A→·a
 " -> "1
-G→E·,#
-E→E·+T,#
-E→E·+T,+
-" [label=E]
+E→S·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" [label=S]
 	"0
-G→·E,#
-E→·E+T,#
-E→·T,#
-E→·E+T,+
-E→·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
+E→·S
+S→·AS
+S→·b
+A→·SA
+A→·a
 " -> "2
-E→T·,#
-E→T·,+
-T→T·*F,#
-T→T·*F,+
-T→T·*F,*
-" [label=T]
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" [label=A]
 	"0
-G→·E,#
-E→·E+T,#
-E→·T,#
-E→·E+T,+
-E→·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
+E→·S
+S→·AS
+S→·b
+A→·SA
+A→·a
 " -> "3
-T→F·,#
-T→F·,+
-T→F·,*
-" [label=F]
+S→b·
+" [label=b]
 	"0
-G→·E,#
-E→·E+T,#
-E→·T,#
-E→·E+T,+
-E→·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
+E→·S
+S→·AS
+S→·b
+A→·SA
+A→·a
 " -> "4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="("]
-	"0
-G→·E,#
-E→·E+T,#
-E→·T,#
-E→·E+T,+
-E→·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "5
-F→i·,#
-F→i·,+
-F→i·,*
-" [label=i]
+A→a·
+" [label=a]
 	"1
-G→E·,#
-E→E·+T,#
-E→E·+T,+
+E→S·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "5
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" [label=S]
+	"1
+E→S·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
 " -> "6
-E→E+·T,#
-E→E+·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="+"]
-	"2
-E→T·,#
-E→T·,+
-T→T·*F,#
-T→T·*F,+
-T→T·*F,*
-" -> "7
-T→T*·F,#
-T→T*·F,+
-T→T*·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="*"]
-	"4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "8
-F→(E·),#
-F→(E·),+
-F→(E·),*
-E→E·+T,)
-E→E·+T,+
-" [label=E]
-	"4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "9
-E→T·,)
-E→T·,+
-T→T·*F,)
-T→T·*F,+
-T→T·*F,*
-" [label=T]
-	"4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "10
-T→F·,)
-T→F·,+
-T→F·,*
-" [label=F]
-	"4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="("]
-	"4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "12
-F→i·,)
-F→i·,+
-F→i·,*
-" [label=i]
-	"6
-E→E+·T,#
-E→E+·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "13
-E→E+T·,#
-E→E+T·,+
-T→T·*F,#
-T→T·*F,+
-T→T·*F,*
-" [label=T]
-	"6
-E→E+·T,#
-E→E+·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
+A→SA·
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" [label=A]
+	"1
+E→S·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
 " -> "3
-T→F·,#
-T→F·,+
-T→F·,*
-" [label=F]
-	"6
-E→E+·T,#
-E→E+·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
+S→b·
+" [label=b]
+	"1
+E→S·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
 " -> "4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="("]
-	"6
-E→E+·T,#
-E→E+·T,+
-T→·T*F,#
-T→·F,#
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "5
-F→i·,#
-F→i·,+
-F→i·,*
-" [label=i]
-	"7
-T→T*·F,#
-T→T*·F,+
-T→T*·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "14
-T→T*F·,#
-T→T*F·,+
-T→T*F·,*
-" [label=F]
-	"7
-T→T*·F,#
-T→T*·F,+
-T→T*·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "4
-F→(·E),#
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="("]
-	"7
-T→T*·F,#
-T→T*·F,+
-T→T*·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "5
-F→i·,#
-F→i·,+
-F→i·,*
-" [label=i]
-	"8
-F→(E·),#
-F→(E·),+
-F→(E·),*
-E→E·+T,)
-E→E·+T,+
-" -> "15
-E→E+·T,)
-E→E+·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="+"]
-	"8
-F→(E·),#
-F→(E·),+
-F→(E·),*
-E→E·+T,)
-E→E·+T,+
-" -> "16
-F→(E)·,#
-F→(E)·,+
-F→(E)·,*
-" [label=")"]
-	"9
-E→T·,)
-E→T·,+
-T→T·*F,)
-T→T·*F,+
-T→T·*F,*
-" -> "17
-T→T*·F,)
-T→T*·F,+
-T→T*·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="*"]
-	"11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "18
-F→(E·),)
-F→(E·),+
-F→(E·),*
-E→E·+T,)
-E→E·+T,+
-" [label=E]
-	"11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "9
-E→T·,)
-E→T·,+
-T→T·*F,)
-T→T·*F,+
-T→T·*F,*
-" [label=T]
-	"11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "10
-T→F·,)
-T→F·,+
-T→F·,*
-" [label=F]
-	"11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="("]
-	"11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "12
-F→i·,)
-F→i·,+
-F→i·,*
-" [label=i]
-	"13
-E→E+T·,#
-E→E+T·,+
-T→T·*F,#
-T→T·*F,+
-T→T·*F,*
+A→a·
+" [label=a]
+	"2
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
 " -> "7
-T→T*·F,#
-T→T*·F,+
-T→T*·F,*
-F→·(E),#
-F→·i,#
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="*"]
-	"15
-E→E+·T,)
-E→E+·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "19
-E→E+T·,)
-E→E+T·,+
-T→T·*F,)
-T→T·*F,+
-T→T·*F,*
-" [label=T]
-	"15
-E→E+·T,)
-E→E+·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "10
-T→F·,)
-T→F·,+
-T→F·,*
-" [label=F]
-	"15
-E→E+·T,)
-E→E+·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="("]
-	"15
-E→E+·T,)
-E→E+·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "12
-F→i·,)
-F→i·,+
-F→i·,*
-" [label=i]
-	"17
-T→T*·F,)
-T→T*·F,+
-T→T*·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "20
-T→T*F·,)
-T→T*F·,+
-T→T*F·,*
-" [label=F]
-	"17
-T→T*·F,)
-T→T*·F,+
-T→T*·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "11
-F→(·E),)
-F→(·E),+
-F→(·E),*
-E→·E+T,)
-E→·T,)
-E→·E+T,+
-E→·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="("]
-	"17
-T→T*·F,)
-T→T*·F,+
-T→T*·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" -> "12
-F→i·,)
-F→i·,+
-F→i·,*
-" [label=i]
-	"18
-F→(E·),)
-F→(E·),+
-F→(E·),*
-E→E·+T,)
-E→E·+T,+
-" -> "15
-E→E+·T,)
-E→E+·T,+
-T→·T*F,)
-T→·F,)
-T→·T*F,+
-T→·F,+
-T→·T*F,*
-T→·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="+"]
-	"18
-F→(E·),)
-F→(E·),+
-F→(E·),*
-E→E·+T,)
-E→E·+T,+
-" -> "21
-F→(E)·,)
-F→(E)·,+
-F→(E)·,*
-" [label=")"]
-	"19
-E→E+T·,)
-E→E+T·,+
-T→T·*F,)
-T→T·*F,+
-T→T·*F,*
-" -> "17
-T→T*·F,)
-T→T*·F,+
-T→T*·F,*
-F→·(E),)
-F→·i,)
-F→·(E),+
-F→·i,+
-F→·(E),*
-F→·i,*
-" [label="*"]
+S→AS·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" [label=S]
+	"2
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" -> "2
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" [label=A]
+	"2
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" -> "3
+S→b·
+" [label=b]
+	"2
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" -> "4
+A→a·
+" [label=a]
+	"5
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "5
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" [label=S]
+	"5
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "6
+A→SA·
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" [label=A]
+	"5
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "3
+S→b·
+" [label=b]
+	"5
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "4
+A→a·
+" [label=a]
+	"6
+A→SA·
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" -> "7
+S→AS·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" [label=S]
+	"6
+A→SA·
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" -> "2
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" [label=A]
+	"6
+A→SA·
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" -> "3
+S→b·
+" [label=b]
+	"6
+A→SA·
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" -> "4
+A→a·
+" [label=a]
+	"7
+S→AS·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "5
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" [label=S]
+	"7
+S→AS·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "6
+A→SA·
+S→A·S
+S→·AS
+S→·b
+A→·SA
+A→·a
+" [label=A]
+	"7
+S→AS·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "3
+S→b·
+" [label=b]
+	"7
+S→AS·
+A→S·A
+A→·SA
+A→·a
+S→·AS
+S→·b
+" -> "4
+A→a·
+" [label=a]
 }
